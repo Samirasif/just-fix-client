@@ -7,7 +7,7 @@ import { baseApi } from "./api/baseApi";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "selectedMeals"], // Only persist auth and selectedMeals slices
+  whitelist: ["auth" ], // Only persist auth and selectedMeals slices
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

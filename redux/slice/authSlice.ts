@@ -7,6 +7,7 @@ type TAuthState = {
     phone?: string;
     firstName?: string;
     lastName?: string;
+    email?:string;
     profilePicture?: {
       url: string;
       altText: string;
@@ -21,10 +22,8 @@ const initialState: TAuthState = {
     phone: "",
     firstName: "",
     lastName: "",
-    isPhoneVerified: false,
-    isOpenJoinUs: false,
-    isOpenSelectArea: false,
-    isOpenSelectServices: false,
+    email:"",
+    
     role: "", // ✅ Default role in initial state
   },
 };
@@ -41,16 +40,13 @@ const authSlice = createSlice({
           phone?: string;
           firstName?: string;
           lastName?: string;
-          isPhoneVerified?: boolean;
-          isRegistered?: boolean;
+          email?:string;
           profilePicture?: {
             url: string;
             altText: string;
           };
           role?: string; // ✅ Also added to payload type
-          isOpenJoinUs?: boolean;
-          isOpenSelectArea?: boolean;
-          isOpenSelectServices?: boolean;
+          
           [key: string]: any;
         };
       }>
