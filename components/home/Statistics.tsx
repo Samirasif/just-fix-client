@@ -18,7 +18,7 @@ const Statistics = () => {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-       const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}users/statistics`);
+       const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/users/statistics`);
 
         setData(res.data.data);
       } catch (error) {
