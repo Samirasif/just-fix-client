@@ -17,7 +17,7 @@ interface FormData {
   location: string;
   profession: string;
   experienceYears: string;
-  hourlyRate: string;
+  hourlyRate: number;
   bio: string;
   role: string;
 }
@@ -38,7 +38,7 @@ export default function SignupPage() {
     location: "",
     profession: "",
     experienceYears: "",
-    hourlyRate: "",
+    hourlyRate: 0,
     bio: "",
     role: "CUSTOMER", // Initialize with default, will be updated dynamically
   })
@@ -47,13 +47,15 @@ export default function SignupPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target
+    const { name, value, type } = e.target
+
     setFormData(prev => ({
       ...prev,
-      [name]: value,
-      role: userType, // Dynamically set role based on userType
+      [name]: type === "number" ? Number(value) : value,
+      role: userType,
     }))
   }
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -91,7 +93,7 @@ export default function SignupPage() {
         submissionData = {
           ...restData,
           experienceYears: parseInt(experienceYears) || 0, // Convert experienceYears to number
-          hourlyRate: parseFloat(hourlyRate) || 0, // Ensure hourlyRate is also a number
+          hourlyRate: hourlyRate || 0, // Ensure hourlyRate is also a number
         }
       }
 
@@ -126,20 +128,20 @@ export default function SignupPage() {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Your Account</h1>
           </div>
 
-         
+
 
           <div className="mb-8">
             <div className="flex bg-gray-100 rounded-lg p-1">
               <button
                 onClick={() => setUserType("CUSTOMER")}
-                className={`flex-1 flex items-center justify-center py-3 px-4 rounded-md text-sm font-medium transition-all ${userType === "CUSTOMER" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
+                className={`flex-1 flex items-center justify-center cursor-pointer py-3 px-4 rounded-md text-sm font-medium transition-all ${userType === "CUSTOMER" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
               >
                 <User className="w-4 h-4 mr-2" />
                 Customer Registration
               </button>
               <button
                 onClick={() => setUserType("SERVICE_PROVIDER")}
-                className={`flex-1 flex items-center justify-center py-3 px-4 rounded-md text-sm font-medium transition-all ${userType === "SERVICE_PROVIDER" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
+                className={`flex-1 flex items-center justify-center cursor-pointer py-3 px-4 rounded-md text-sm font-medium transition-all ${userType === "SERVICE_PROVIDER" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
               >
                 <Building2 className="w-4 h-4 mr-2" />
                 Service Provider
@@ -160,7 +162,7 @@ export default function SignupPage() {
                   required
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 />
               </div>
               <div>
@@ -174,7 +176,7 @@ export default function SignupPage() {
                   required
                   value={formData.lastName}
                   onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 />
               </div>
             </div>
@@ -190,7 +192,7 @@ export default function SignupPage() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
 
@@ -205,7 +207,7 @@ export default function SignupPage() {
                 required
                 value={formData.phone}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
 
@@ -222,7 +224,7 @@ export default function SignupPage() {
                     required
                     value={formData.password}
                     onChange={handleChange}
-                    className="block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+                    className="block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400 pr-10"
                   />
                   <button
                     type="button"
@@ -249,7 +251,7 @@ export default function SignupPage() {
                     required
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+                    className="block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400 pr-10"
                   />
                   <button
                     type="button"
@@ -277,7 +279,7 @@ export default function SignupPage() {
                 placeholder="City, State"
                 value={formData.location}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
 
@@ -294,7 +296,7 @@ export default function SignupPage() {
                       required={userType === "SERVICE_PROVIDER"}
                       value={formData.profession}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     >
                       <option value="">Select your profession</option>
                       <option value="Electrician">Electrician</option>
@@ -319,7 +321,7 @@ export default function SignupPage() {
                       required={userType === "SERVICE_PROVIDER"}
                       value={formData.experienceYears}
                       onChange={handleChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     >
                       <option value="">Select experience</option>
                       <option value="0">0-1 years</option>
@@ -343,7 +345,7 @@ export default function SignupPage() {
                     placeholder="e.g., 500"
                     value={formData.hourlyRate}
                     onChange={handleChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
                   />
                 </div>
 
@@ -357,17 +359,17 @@ export default function SignupPage() {
                     placeholder="Tell us about your experience and design philosophy..."
                     value={formData.bio}
                     onChange={handleChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
                     rows={4}
                   />
                 </div>
               </>
             )}
-      {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-              <span className="block sm:inline">{error}</span>
-            </div>
-          )}
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span className="block sm:inline">{error}</span>
+              </div>
+            )}
             <div className="flex items-start space-x-2">
               <input
                 type="checkbox"
@@ -390,7 +392,7 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2
+              className={`w-full py-3 cursor-pointer px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2
                 ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-900 hover:bg-gray-800 text-white focus:ring-gray-900'}
               `}
             >

@@ -17,7 +17,7 @@ export default function LoginPage() {
     email: "",
     password: "",
   })
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,24 +41,24 @@ const dispatch = useDispatch()
       const data = await res.json()
 
       if (res.ok && data.success) {
-        const { _id, firstName,email, lastName, phone, role } = data?.data?.user
+        const { _id, firstName, email, lastName, phone, role } = data?.data?.user
 
-  dispatch(setUser({
-    user: {
-        
-      _id,
-      firstName,
-      lastName,
-      email,
-      phone,
-      role,
-    
-    }
-  }))
+        dispatch(setUser({
+          user: {
+
+            _id,
+            firstName,
+            lastName,
+            email,
+            phone,
+            role,
+
+          }
+        }))
         toast.success("Logged in successfully!")
         // optionally store token: localStorage.setItem("token", data.token)
         router.push("/") // redirect to home or dashboard
-        console.log("user data",data?.data?.user)
+        console.log("user data", data?.data?.user)
       } else {
         toast.error(data.message || "Login failed")
       }
@@ -91,7 +91,7 @@ const dispatch = useDispatch()
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
 
@@ -107,7 +107,7 @@ const dispatch = useDispatch()
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10"
+                  className="block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400 pr-10"
                 />
                 <button
                   type="button"
@@ -123,17 +123,8 @@ const dispatch = useDispatch()
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="remember"
-                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <label htmlFor="remember" className="text-sm text-gray-700">
-                  Remember me
-                </label>
-              </div>
+            <div className="flex items-center justify-end">
+
               <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">
                 Forgot password?
               </Link>
@@ -142,7 +133,7 @@ const dispatch = useDispatch()
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 
+              className={`w-full cursor-pointer py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 
                 ${isLoading
                   ? "bg-gray-400 text-white cursor-not-allowed"
                   : "bg-gray-900 hover:bg-gray-800 text-white focus:ring-gray-900"

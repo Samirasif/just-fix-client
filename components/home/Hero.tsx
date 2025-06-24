@@ -11,24 +11,24 @@ const Hero = () => {
                     {/* Left Content */}
                     <div className="space-y-8">
                         <div className="space-y-6">
-                            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                            <h1 className="text-4xl lg:text-[4.5rem] font-bold text-gray-900 leading-tight">
                                 Find Trusted
 
                                 Local Service Providers
 
                                 Near You
                             </h1>
-                            <p className="text-lg text-gray-600 max-w-md">
+                            <p className="text-lg text-gray-600 max-w-xl">
                                 Connect with verified electricians, plumbers, cleaners, and other skilled professionals for any job — quickly and reliably.
                             </p>
 
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <Link href='/service-providers' className="bg-gray-900 cursor-pointer hover:bg-gray-800 text-white font-medium px-8 py-3 rounded-md">
+                            <Link href='/service-providers' className="bg-gradient-to-r from-pink-400 to-purple-500 text-white font-medium px-8 py-3 rounded-md">
                                 Find Service Providers
                             </Link>
-                            <Link href='/signup' className="border bg-white hover:bg-gray-100 cursor-pointer border-gray-300 hover:border-gray-400 text-gray-700 font-medium px-8 py-3 rounded-md">
+                            <Link href='/signup' className=" bg-white hover:text-violet-700 cursor-pointer border-gray-300  text-gray-700 font-medium px-8 py-3 rounded-md">
                                 Register Yourself
                             </Link>
                         </div>

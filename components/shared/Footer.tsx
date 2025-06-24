@@ -15,9 +15,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-8 mb-10">
           {/* Logo and Contact Info */}
           <div className="lg:col-span-1 lg:w-4/5">
-            <h2 className="text-xl font-semibold mb-4">FixPoint</h2>
+            <h2 className="text-xl font-semibold mb-4">JustFix</h2>
             <p className="text-sm text-gray-600">
-              FixPoint connects you with trusted electricians, plumbers, cleaners, and other local experts. Get reliable help for your home and office needs — quickly and easily.
+              JustFix connects you with trusted electricians, plumbers, cleaners, and other local experts. Get reliable help for your home and office needs — quickly and easily.
             </p>
           </div>
 
@@ -111,7 +111,7 @@ const Footer = () => {
                   href="#"
                   className="text-gray-600 hover:text-gray-900 text-sm"
                 >
-                  FixPoint@gmail.com
+                  JustFix@gmail.com
                 </Link>
               </li>
             </ul>
@@ -121,7 +121,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="pt-5 border-t border-gray-200">
           <p className="text-gray-600 text-sm text-center">
-            © 2025 FixPoint. All Rights Reserved.
+            © 2025 JustFix. All Rights Reserved.
           </p>
         </div>
       </div>
