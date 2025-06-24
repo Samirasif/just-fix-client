@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
+import { toast } from "sonner"
 import {
   MapPin,
   Briefcase,
@@ -30,6 +31,23 @@ interface Provider {
 }
 
 export default function ProviderDetailsPage() {
+    const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    location: "",
+    message: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+ 
   const params = useParams();
   const id = params?.id as string;
 
@@ -51,6 +69,38 @@ export default function ProviderDetailsPage() {
     if (id) fetchProvider();
   }, [id]);
 
+   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/contacts/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData,providerId:id }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        toast.success("Message sent to provider!");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          phone: "",
+          email: "",
+          location: "",
+          message: "",
+        });
+      } else {
+        toast.error(data.message || "Something went wrong");
+      }
+    } catch (error) {
+      toast.error("Failed to send message.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   if (loading) {
     return <div className="text-center py-20 text-gray-500">Loading provider...</div>;
   }
@@ -126,7 +176,7 @@ export default function ProviderDetailsPage() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-8">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ">
               {/* Contact Info */}
               <div className="mb-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
@@ -151,11 +201,111 @@ export default function ProviderDetailsPage() {
                 </div>
               </div>
 
-              {/* Contact Button */}
-              <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                Contact Provider
-              </button>
+             
             </div>
+            <form
+      onSubmit={handleSubmit}
+      className="bg-white mt-6 rounded-lg shadow-sm border border-gray-200 p-6  space-y-4"
+    >
+      <div>
+        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+          First Name *
+        </label>
+        <input
+          id="firstName"
+          name="firstName"
+          type="text"
+          required
+          value={formData.firstName}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+          Last Name *
+        </label>
+        <input
+          id="lastName"
+          name="lastName"
+          type="text"
+          required
+          value={formData.lastName}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+          Phone *
+        </label>
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          required
+          value={formData.phone}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          Email *
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          value={formData.email}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+          Location *
+        </label>
+        <input
+          id="location"
+          name="location"
+          type="text"
+          required
+          value={formData.location}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+      </div>
+
+      <div>
+        <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+          Message *
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows={4}
+          required
+          value={formData.message}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={isLoading}
+        className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        {isLoading ? "Sending..." : "Contact Provider"}
+      </button>
+    </form>
+
           </div>
         </div>
       </div>
