@@ -17,7 +17,7 @@ const Categories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('http://localhost:5001/api/v1/service-providers/categories');
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/categories`);
         setServiceCategories(res.data.data); // assumes structure: { success, message, data: [...] }
       } catch (error) {
         console.error('Failed to fetch categories', error);

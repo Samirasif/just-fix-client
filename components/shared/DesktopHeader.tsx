@@ -16,7 +16,7 @@ import { selectCurrentUser } from "@/redux/slice/authSlice";
 
 // Interface for a service provider
 interface IServiceProvider {
-  id: number;
+  _id: string;
   firstName: string;
   lastName: string;
   profession: string;
@@ -24,33 +24,7 @@ interface IServiceProvider {
   location: string;
 }
 
-// Static data
-const staticServiceProviders: IServiceProvider[] = [
-  {
-    id: 1,
-    firstName: "John",
-    lastName: "Doe",
-    profession: "Web Developer",
-    hourlyRate: "$40/hr",
-    location: "Dhaka, BD",
-  },
-  {
-    id: 2,
-    firstName: "Jane",
-    lastName: "Smith",
-    profession: "UI/UX Designer",
-    hourlyRate: "$35/hr",
-    location: "Chittagong, BD",
-  },
-  {
-    id: 3,
-    firstName: "Rahim",
-    lastName: "Khan",
-    profession: "Mobile App Developer",
-    hourlyRate: "$50/hr",
-    location: "Sylhet, BD",
-  },
-];
+
 
 const navLinks: { name: string; href: string }[] = [
   { name: "Home", href: "/" },
@@ -63,26 +37,34 @@ const DesktopHeader: React.FC = () => {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<IServiceProvider[]>([]);
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
+  const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
+  const value = e.target.value;
+  setQuery(value);
 
-    if (value.trim() === "") {
+  if (value.trim() === '') {
+    setResults([]);
+    return;
+  }
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/search?searchTerm=${value}`);
+    const data = await res.json();
+
+    if (data.success) {
+      setResults(data.data);
+    } else {
       setResults([]);
-      return;
     }
+  } catch (error) {
+    console.error('Search error:', error);
+    setResults([]);
+  }
+};
 
-    const filtered = staticServiceProviders.filter((provider) =>
-      `${provider.firstName} ${provider.lastName} ${provider.profession}`
-        .toLowerCase()
-        .includes(value.toLowerCase())
-    );
-
-    setResults(filtered);
-  };
 
   return (
     <>
+      {/* HEADER SECTION */}
       <header className="bg-white shadow-sm z-50 relative">
         <ContainerWrapper className="hidden lg:block w-full">
           <div className="flex justify-between items-center h-16">
@@ -173,15 +155,15 @@ const DesktopHeader: React.FC = () => {
         </ContainerWrapper>
       </header>
 
-      {/* Search Results Below Header */}
+      {/* SEARCH RESULTS BELOW HEADER */}
       {results.length > 0 && (
-        <div className="bg-gray-50 border-t border-gray-200 shadow-sm absolute w-full z-40">
+        <div className="bg-gray-50 border-t border-gray-200 shadow-sm w-full z-40 relative">
           <ContainerWrapper className="py-4">
             <div className="space-y-4">
               {results.map((provider) => (
                 <div
-                  key={provider.id}
-                  className="p-4 border bg-white rounded-md  transition"
+                  key={provider._id}
+                  className="p-4 border bg-white rounded-md transition"
                 >
                   <p className="font-semibold text-gray-800">
                     {provider.firstName} {provider.lastName}
@@ -190,7 +172,7 @@ const DesktopHeader: React.FC = () => {
                   <p className="text-sm text-gray-600">{provider.hourlyRate}</p>
                   <p className="text-sm text-gray-600">{provider.location}</p>
                   <Link
-                    href={`/service-providers/${provider.id}`}
+                    href={`/service-providers/${provider._id}`}
                     className="text-violet-600 text-sm font-medium hover:underline"
                   >
                     Contact Provider

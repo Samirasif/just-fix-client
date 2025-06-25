@@ -97,7 +97,7 @@ export default function SignupPage() {
         }
       }
 
-      const response = await fetch("http://localhost:5001/api/v1/users/create", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/users/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

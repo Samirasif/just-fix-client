@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import { toast } from "sonner"
+import { useSelector } from "react-redux";
 import {
   MapPin,
   Briefcase,
@@ -13,6 +14,7 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
+import { selectCurrentUser } from "@/redux/slice/authSlice";
 
 interface Provider {
   _id: string;
@@ -29,17 +31,21 @@ interface Provider {
   createdAt: string;
   updatedAt: string;
 }
-
+interface Category {
+  name: string;
+  total: number;
+}
 export default function ProviderDetailsPage() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    email: "",
+    
     location: "",
     message: "",
   });
-
+const user = useSelector(selectCurrentUser);
+    const [serviceCategories, setServiceCategories] = useState<Category[]>([]);
+   
+  
+    
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -57,7 +63,7 @@ export default function ProviderDetailsPage() {
   useEffect(() => {
     const fetchProvider = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/api/v1/service-providers/${id}`);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/${id}`);
         setProvider(res.data.data);
       } catch (error) {
         console.error("Failed to fetch provider", error);
@@ -69,6 +75,7 @@ export default function ProviderDetailsPage() {
     if (id) fetchProvider();
   }, [id]);
 
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -85,10 +92,7 @@ export default function ProviderDetailsPage() {
       if (response.ok && data.success) {
         toast.success("Message sent to provider!");
         setFormData({
-          firstName: "",
-          lastName: "",
-          phone: "",
-          email: "",
+          
           location: "",
           message: "",
         });
@@ -128,8 +132,8 @@ export default function ProviderDetailsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Provider Overview */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
-          <div className="flex items-start space-x-6">
+        <div className="flex justify-between bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
+          <div className="flex  items-start space-x-6">
             <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
               <span className="text-white font-bold text-lg">{initial}</span>
             </div>
@@ -146,6 +150,19 @@ export default function ProviderDetailsPage() {
               </p>
             </div>
           </div>
+<div className="mb-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-2">
+                    <Mail className="w-4 h-4 text-gray-600" />
+                    <a href={`mailto:${provider.email}`} className="text-blue-600 hover:text-blue-700">{provider.email}</a>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Phone className="w-4 h-4 text-gray-600" />
+                    <a href={`tel:${provider.phone}`} className="text-blue-600 hover:text-blue-700">{provider.phone}</a>
+                  </div>
+                </div>
+              </div>
         </div>
 
         {/* Provider Details */}
@@ -169,23 +186,11 @@ export default function ProviderDetailsPage() {
             </div>
           </div>
 
-          {/* Sidebar */}
+        
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ">
               {/* Contact Info */}
-              <div className="mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <Mail className="w-4 h-4 text-gray-600" />
-                    <a href={`mailto:${provider.email}`} className="text-blue-600 hover:text-blue-700">{provider.email}</a>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Phone className="w-4 h-4 text-gray-600" />
-                    <a href={`tel:${provider.phone}`} className="text-blue-600 hover:text-blue-700">{provider.phone}</a>
-                  </div>
-                </div>
-              </div>
+              
 
               {/* Experience */}
               <div className="mb-6">
@@ -202,65 +207,12 @@ export default function ProviderDetailsPage() {
               onSubmit={handleSubmit}
               className="bg-white mt-6 rounded-lg shadow-sm border border-gray-200 p-6  space-y-4"
             >
-              <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-                  First Name *
-                </label>
-                <input
-                  id="firstName"
-                  name="firstName"
-                  type="text"
-                  required
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
-              </div>
+             
 
-              <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-                  Last Name *
-                </label>
-                <input
-                  id="lastName"
-                  name="lastName"
-                  type="text"
-                  required
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
-              </div>
+          
 
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                  Phone *
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
-              </div>
+              
 
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email *
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                />
-              </div>
 
               <div>
                 <label htmlFor="location" className="block text-sm font-medium text-gray-700">

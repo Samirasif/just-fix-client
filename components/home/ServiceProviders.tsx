@@ -27,7 +27,7 @@ const ServiceProviders = () => {
   useEffect(() => {
     const fetchProviders = async () => {
       try {
-        const res = await axios.get("http://localhost:5001/api/v1/service-providers");
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers`);
         setProviders(res.data.data);
       } catch (error) {
         console.error("Failed to fetch service providers", error);
