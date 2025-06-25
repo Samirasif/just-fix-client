@@ -75,13 +75,7 @@ const ServiceProviders = () => {
                     {provider.firstName.charAt(0)}
                   </div>
 
-                  {/* Save */}
-                  <button
-                    onClick={() => handleSave(fullName)}
-                    className="text-gray-400 hover:text-gray-600 flex items-center text-sm font-medium"
-                  >
-                    Save <Bookmark className="ml-1 w-4 h-4" />
-                  </button>
+
                 </div>
 
                 {/* Name */}
