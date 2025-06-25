@@ -8,76 +8,55 @@ import axios from "axios";
 import Link from "next/link";
 
 interface ServiceProvider {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  profession: string;
-  bio: string;
-  experienceYears: number;
-  hourlyRate: number;
-  location: string;
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    profession: string;
+    bio: string;
+    experienceYears: number;
+    hourlyRate: number;
+    location: string;
 }
 import { Search, MapPin, Bookmark } from "lucide-react"
 
 export default function ServiceProvidersPage() {
-   const [providers, setProviders] = useState<ServiceProvider[]>([]);
-     const [loading, setLoading] = useState(true);
+    const [providers, setProviders] = useState<ServiceProvider[]>([]);
+    const [loading, setLoading] = useState(true);
     const params = useParams();
-     const id = params?.id as string;
-     useEffect(() => {
+    const id = params?.id as string;
+    useEffect(() => {
 
-       const fetchProviders = async () => {
-         try {
-           const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/categories/${id}`);
-           setProviders(res.data.data);
-         } catch (error) {
-           console.error("Failed to fetch service providers", error);
-         } finally {
-           setLoading(false);
-         }
-       };
-   
-       fetchProviders();
-     }, []);
+        const fetchProviders = async () => {
+            try {
+                const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/categories/${id}`);
+                setProviders(res.data.data);
+            } catch (error) {
+                console.error("Failed to fetch service providers", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProviders();
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
             <header className="bg-gradient-to-r from-indigo-900 to-purple-900 text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <h1 className="text-4xl font-bold text-center mb-8">Find Top Service Providers</h1>
+                    <h1 className="text-4xl font-bold text-center">Find Top Service Providers</h1>
 
-                    {/* Search Bar */}
-                    <div className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
-                        <div className="flex-1 relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <input
-                                placeholder="Search provider name, services, or company"
-                                defaultValue="Interior Design"
-                                className="pl-10 h-12 text-lg w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="flex-1 relative">
-                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <input
-                                placeholder="Location"
-                                defaultValue="Chicago, IL"
-                                className="pl-10 h-12 bg-white text-lg w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            />
-                        </div>
-                        <button className="h-12 px-8 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            Search
-                        </button>
-                    </div>
+
                 </div>
             </header>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="">
                     {/* Filters Sidebar */}
-                   
+
 
                     {/* Main Content */}
                     <div className="">
@@ -116,7 +95,7 @@ export default function ServiceProvidersPage() {
                                                         <span className="text-gray-500">Experience</span>
                                                         <p className="font-medium">{provider.experienceYears}</p>
                                                     </div>
-                                                   
+
                                                 </div>
                                                 <p className="text-gray-500 text-sm mt-4">{provider.bio}</p>
                                             </div>

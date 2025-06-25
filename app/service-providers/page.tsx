@@ -8,67 +8,118 @@ import axios from "axios";
 import Link from "next/link";
 
 interface ServiceProvider {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  profession: string;
-  bio: string;
-  experienceYears: number;
-  hourlyRate: number;
-  location: string;
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    profession: string;
+    bio: string;
+    experienceYears: number;
+    hourlyRate: number;
+    location: string;
 }
 import { Search, MapPin, Bookmark } from "lucide-react"
 
 export default function ServiceProvidersPage() {
-   const [providers, setProviders] = useState<ServiceProvider[]>([]);
-     const [loading, setLoading] = useState(true);
-   
-     useEffect(() => {
-       const fetchProviders = async () => {
-         try {
-           const res = await axios.get("http://localhost:5001/api/v1/service-providers");
-           setProviders(res.data.data);
-         } catch (error) {
-           console.error("Failed to fetch service providers", error);
-         } finally {
-           setLoading(false);
-         }
-       };
-   
-       fetchProviders();
-     }, []);
+
+    const [providers, setProviders] = useState<ServiceProvider[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Filters
+    //   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+    //   const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+    //   const [selectedExperience, setSelectedExperience] = useState<string[]>([]);
+
+    //   const handleCheckbox = (
+    //     value: string,
+    //     selectedList: string[],
+    //     setList: React.Dispatch<React.SetStateAction<string[]>>
+    //   ) => {
+    //     if (selectedList.includes(value)) {
+    //       setList(selectedList.filter((v) => v !== value));
+    //     } else {
+    //       setList([...selectedList, value]);
+    //     }
+    //   };
+
+    //   const buildQueryString = () => {
+    //     const params = new URLSearchParams();
+    //     if (selectedRoles.length > 0) {
+    //       params.append("role", selectedRoles.join(","));
+    //     }
+    //     if (selectedLocations.length > 0) {
+    //       params.append("location", selectedLocations.join(","));
+    //     }
+    //     if (selectedExperience.length > 0) {
+    //       params.append("experienceYears", selectedExperience.join(","));
+    //     }
+    //     return params.toString();
+    //   };
+
+    //   const fetchProviders = async () => {
+    //     try {
+    //       setLoading(true);
+    //       const query = buildQueryString();
+    //       const res = await axios.get(`http://localhost:5001/api/v1/service-providers?${query}`);
+    //       setProviders(res.data.data);
+    //     } catch (error) {
+    //       console.error("Failed to fetch service providers", error);
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   };
+
+    //   useEffect(() => {
+    //     fetchProviders();
+    //   }, [selectedRoles, selectedLocations, selectedExperience]);
+
+// const [filterOptions, setFilterOptions] = useState<{
+//   locations: string[];
+//   professions: string[];
+//   experienceYears: string[];
+// }>({
+//   locations: [],
+//   professions: [],
+//   experienceYears: [],
+// });
+
+// useEffect(() => {
+//   const fetchFilters = async () => {
+//     try {
+//       const res = await axios.get("http://localhost:5001/api/v1/service-providers/filters");
+//       setFilterOptions(res.data);
+//     } catch (error) {
+//       console.error("Failed to fetch filters", error);
+//     }
+//   };
+
+//   fetchFilters();
+// }, [])
+
+    useEffect(() => {
+        const fetchProviders = async () => {
+            try {
+                const res = await axios.get("http://localhost:5001/api/v1/service-providers");
+                setProviders(res.data.data);
+            } catch (error) {
+                console.error("Failed to fetch service providers", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProviders();
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
             <header className="bg-gradient-to-r from-indigo-900 to-purple-900 text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <h1 className="text-4xl font-bold text-center mb-8">Find Top Service Providers</h1>
+                    <h1 className="text-4xl font-bold text-center">Find Top Service Providers</h1>
 
-                    {/* Search Bar */}
-                    <div className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto">
-                        <div className="flex-1 relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <input
-                                placeholder="Search provider name, services, or company"
-                                defaultValue="Interior Design"
-                                className="pl-10 h-12 text-lg w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="flex-1 relative">
-                            <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <input
-                                placeholder="Location"
-                                defaultValue="Chicago, IL"
-                                className="pl-10 h-12 bg-white text-lg w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            />
-                        </div>
-                        <button className="h-12 px-8 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            Search
-                        </button>
-                    </div>
+
                 </div>
             </header>
 
@@ -204,7 +255,7 @@ export default function ServiceProvidersPage() {
                                                         <span className="text-gray-500">Experience</span>
                                                         <p className="font-medium">{provider.experienceYears}</p>
                                                     </div>
-                                                   
+
                                                 </div>
                                                 <p className="text-gray-500 text-sm mt-4">{provider.bio}</p>
                                             </div>

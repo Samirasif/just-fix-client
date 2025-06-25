@@ -31,7 +31,7 @@ interface Provider {
 }
 
 export default function ProviderDetailsPage() {
-    const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     phone: "",
@@ -47,7 +47,7 @@ export default function ProviderDetailsPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
- 
+
   const params = useParams();
   const id = params?.id as string;
 
@@ -69,7 +69,7 @@ export default function ProviderDetailsPage() {
     if (id) fetchProvider();
   }, [id]);
 
-   const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
@@ -77,7 +77,7 @@ export default function ProviderDetailsPage() {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/contacts/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData,providerId:id }),
+        body: JSON.stringify({ ...formData, providerId: id }),
       });
 
       const data = await response.json();
@@ -117,16 +117,11 @@ export default function ProviderDetailsPage() {
       {/* Header */}
       <header className="bg-gradient-to-r from-indigo-900 to-purple-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex items-center justify-between">
+          <div className="">
             <Link href="/service-providers" className="text-white hover:text-gray-200">
               ← Back to Service Providers
             </Link>
-            <div className="flex items-center space-x-4">
-              <button className="text-gray-200 hover:text-white">
-                <Star className="w-5 h-5 mr-1 inline-block" />
-                Save Provider
-              </button>
-            </div>
+
           </div>
         </div>
       </header>
@@ -201,110 +196,110 @@ export default function ProviderDetailsPage() {
                 </div>
               </div>
 
-             
+
             </div>
             <form
-      onSubmit={handleSubmit}
-      className="bg-white mt-6 rounded-lg shadow-sm border border-gray-200 p-6  space-y-4"
-    >
-      <div>
-        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-          First Name *
-        </label>
-        <input
-          id="firstName"
-          name="firstName"
-          type="text"
-          required
-          value={formData.firstName}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-      </div>
+              onSubmit={handleSubmit}
+              className="bg-white mt-6 rounded-lg shadow-sm border border-gray-200 p-6  space-y-4"
+            >
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                  First Name *
+                </label>
+                <input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  required
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
 
-      <div>
-        <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-          Last Name *
-        </label>
-        <input
-          id="lastName"
-          name="lastName"
-          type="text"
-          required
-          value={formData.lastName}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-      </div>
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                  Last Name *
+                </label>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  required
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
 
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-          Phone *
-        </label>
-        <input
-          id="phone"
-          name="phone"
-          type="tel"
-          required
-          value={formData.phone}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-      </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                  Phone *
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email *
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          value={formData.email}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-      </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email *
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
 
-      <div>
-        <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-          Location *
-        </label>
-        <input
-          id="location"
-          name="location"
-          type="text"
-          required
-          value={formData.location}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-      </div>
+              <div>
+                <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                  Location *
+                </label>
+                <input
+                  id="location"
+                  name="location"
+                  type="text"
+                  required
+                  value={formData.location}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
 
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-          Message *
-        </label>
-        <textarea
-          id="message"
-          name="message"
-          rows={4}
-          required
-          value={formData.message}
-          onChange={handleChange}
-          className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
-        />
-      </div>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                  Message *
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  required
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                />
+              </div>
 
-      <button
-        type="submit"
-        disabled={isLoading}
-        className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-      >
-        {isLoading ? "Sending..." : "Contact Provider"}
-      </button>
-    </form>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                {isLoading ? "Sending..." : "Contact Provider"}
+              </button>
+            </form>
 
           </div>
         </div>
