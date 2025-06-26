@@ -9,7 +9,7 @@ const Profile = () => {
     lastName: "Doe",
     email: "john.doe@email.com",
     phone: "+1 (555) 123-4567",
-    address: "123 Food Street, City, State 12345",
+    location: "123 Food Street, City, State 12345",
   });
 
   const handleInputChange = (field: string, value: any) => {
@@ -32,7 +32,7 @@ const Profile = () => {
               <User className="w-8 h-8 text-gray-600" />
             </div>
             <div>
-              <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors">
+              <button className="bg-red-400 cursor-pointer hover:bg-red-500 text-white px-4 py-2 rounded-lg transition-colors">
                 Change Photo
               </button>
               <p className="text-sm text-gray-600 mt-2">
@@ -91,10 +91,10 @@ const Profile = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Address
+              Location
             </label>
             <textarea
-              value={formData.address}
+              value={formData.location}
               onChange={(e) => handleInputChange("address", e.target.value)}
               rows={3}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"

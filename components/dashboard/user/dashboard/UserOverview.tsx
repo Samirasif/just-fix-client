@@ -1,41 +1,41 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CalendarDays, MapPin, Heart, TrendingUp } from "lucide-react"
+// import { CalendarDays, MapPin, Heart, TrendingUp } from "lucide-react"
+import {
+  ClipboardList,
+  Clock,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
+
+const metrics = [
+  {
+    title: "Total Service Requests",
+    value: "47",
+    changeType: "positive" as const,
+    icon: ClipboardList,
+  },
+  {
+    title: "Pending Requests",
+    value: "10",
+    changeType: "neutral" as const,
+    icon: Clock,
+  },
+  {
+    title: "Completed Services",
+    value: "32",
+    changeType: "positive" as const,
+    icon: CheckCircle,
+  },
+  {
+    title: "Cancelled Services",
+    value: "5",
+    changeType: "negative" as const,
+    icon: XCircle,
+  },
+];
 
 export default function UserOverview() {
-  const metrics = [
-    {
-      title: "Total Bookings",
-      value: "47",
-      change: "+12%",
-      changeType: "positive" as const,
-      description: "Since last month",
-      icon: CalendarDays,
-    },
-    {
-      title: "Upcoming Reservations",
-      value: "8",
-      change: "+25%",
-      changeType: "positive" as const,
-      description: "Since last month",
-      icon: MapPin,
-    },
-    {
-      title: "Favorite Restaurants",
-      value: "23",
-      change: "+8%",
-      changeType: "positive" as const,
-      description: "Since last month",
-      icon: Heart,
-    },
-    {
-      title: "Booking Success Rate",
-      value: "94%",
-      change: "-2%",
-      changeType: "negative" as const,
-      description: "Since last month",
-      icon: TrendingUp,
-    },
-  ]
+
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -51,16 +51,8 @@ export default function UserOverview() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold">{metric.value}</div>
-                  <p className="text-xs text-muted-foreground mt-1">{metric.description}</p>
                 </div>
-                <div className="flex items-center space-x-1">
-                  <span
-                    className={`text-xs font-medium ${metric.changeType === "positive" ? "text-green-600" : "text-red-600"
-                      }`}
-                  >
-                    {metric.change}
-                  </span>
-                </div>
+
               </div>
             </CardContent>
           </Card>
@@ -69,3 +61,4 @@ export default function UserOverview() {
     </div>
   )
 }
+
