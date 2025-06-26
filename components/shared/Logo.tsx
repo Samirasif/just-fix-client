@@ -6,13 +6,13 @@ const Logo = () => {
     return (
 
         <Link href="/" className="flex items-center ">
-            <div className="px-3  w-40 flex items-center justify-center">
+            <div className="px-3  w-auto  flex items-center justify-center">
                 <Image
-                    src="/"
+                    src="/logo.png"
                     alt="Logo"
                     width={40}
                     height={40}
-                    className='w-full h-10 object-cover'
+                    className='w-full h-full object-cover'
                 />
             </div>
         </Link>

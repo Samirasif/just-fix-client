@@ -2,10 +2,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
-import { toast } from "sonner"
+import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import {
   MapPin,
@@ -31,28 +31,32 @@ interface Provider {
   createdAt: string;
   updatedAt: string;
 }
+
 interface Category {
   name: string;
   total: number;
 }
+
+interface FormData {
+  location: string;
+  message: string;
+}
+
 export default function ProviderDetailsPage() {
-  const [formData, setFormData] = useState({
-    
+  const [formData, setFormData] = useState<FormData>({
     location: "",
     message: "",
   });
-const user = useSelector(selectCurrentUser);
-    const [serviceCategories, setServiceCategories] = useState<Category[]>([]);
-   
-  
-    
+  const user = useSelector(selectCurrentUser);
+  const isLoggedIn = user?._id;
+  const [serviceCategories, setServiceCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-
 
   const params = useParams();
   const id = params?.id as string;
@@ -67,6 +71,7 @@ const user = useSelector(selectCurrentUser);
         setProvider(res.data.data);
       } catch (error) {
         console.error("Failed to fetch provider", error);
+        toast.error("Failed to load provider details");
       } finally {
         setLoading(false);
       }
@@ -75,16 +80,29 @@ const user = useSelector(selectCurrentUser);
     if (id) fetchProvider();
   }, [id]);
 
- 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isLoggedIn) {
+      toast.error("Please sign up or log in to contact the provider");
+      router.push("/signup");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
+      const payload = {
+        userId: user._id,
+        location: formData.location,
+        message: formData.message,
+        providerId: id,
+      };
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/contacts/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, providerId: id }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
@@ -92,7 +110,6 @@ const user = useSelector(selectCurrentUser);
       if (response.ok && data.success) {
         toast.success("Message sent to provider!");
         setFormData({
-          
           location: "",
           message: "",
         });
@@ -105,6 +122,7 @@ const user = useSelector(selectCurrentUser);
       setIsLoading(false);
     }
   };
+
   if (loading) {
     return <div className="text-center py-20 text-gray-500">Loading provider...</div>;
   }
@@ -125,7 +143,6 @@ const user = useSelector(selectCurrentUser);
             <Link href="/service-providers" className="text-white hover:text-gray-200">
               ← Back to Service Providers
             </Link>
-
           </div>
         </div>
       </header>
@@ -133,7 +150,7 @@ const user = useSelector(selectCurrentUser);
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Provider Overview */}
         <div className="flex justify-between bg-white rounded-lg shadow-sm border border-gray-200 p-8 mb-8">
-          <div className="flex  items-start space-x-6">
+          <div className="flex items-start space-x-6">
             <div className="w-16 h-16 bg-black rounded-lg flex items-center justify-center flex-shrink-0">
               <span className="text-white font-bold text-lg">{initial}</span>
             </div>
@@ -150,19 +167,19 @@ const user = useSelector(selectCurrentUser);
               </p>
             </div>
           </div>
-<div className="mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <Mail className="w-4 h-4 text-gray-600" />
-                    <a href={`mailto:${provider.email}`} className="text-blue-600 hover:text-blue-700">{provider.email}</a>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Phone className="w-4 h-4 text-gray-600" />
-                    <a href={`tel:${provider.phone}`} className="text-blue-600 hover:text-blue-700">{provider.phone}</a>
-                  </div>
-                </div>
+          <div className="mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Mail className="w-4 h-4 text-gray-600" />
+                <a href={`mailto:${provider.email}`} className="text-blue-600 hover:text-blue-700">{provider.email}</a>
               </div>
+              <div className="flex items-center space-x-2">
+                <Phone className="w-4 h-4 text-gray-600" />
+                <a href={`tel:${provider.phone}`} className="text-blue-600 hover:text-blue-700">{provider.phone}</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Provider Details */}
@@ -186,12 +203,8 @@ const user = useSelector(selectCurrentUser);
             </div>
           </div>
 
-        
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ">
-              {/* Contact Info */}
-              
-
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               {/* Experience */}
               <div className="mb-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Experience</h2>
@@ -200,20 +213,11 @@ const user = useSelector(selectCurrentUser);
                   <span className="text-gray-700">{provider.experienceYears}+ Years</span>
                 </div>
               </div>
-
-
             </div>
             <form
               onSubmit={handleSubmit}
-              className="bg-white mt-6 rounded-lg shadow-sm border border-gray-200 p-6  space-y-4"
+              className="bg-white mt-6 rounded-lg shadow-sm border border-gray-200 p-6 space-y-4"
             >
-             
-
-          
-
-              
-
-
               <div>
                 <label htmlFor="location" className="block text-sm font-medium text-gray-700">
                   Location *
@@ -247,12 +251,11 @@ const user = useSelector(selectCurrentUser);
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
                 {isLoading ? "Sending..." : "Contact Provider"}
               </button>
             </form>
-
           </div>
         </div>
       </div>
