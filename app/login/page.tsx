@@ -42,7 +42,11 @@ export default function LoginPage() {
 
       if (res.ok && data.success) {
         const { _id, firstName, email, lastName, phone, role } = data?.data?.user
+      const { accessToken, refreshToken } = data?.data;
 
+      // ✅ Store tokens in localStorage
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
         dispatch(setUser({
           user: {
 
@@ -57,7 +61,7 @@ export default function LoginPage() {
         }))
         toast.success("Logged in successfully!")
         // optionally store token: localStorage.setItem("token", data.token)
-        router.push("/") // redirect to home or dashboard
+        router.push("/user/dashboard") // redirect to home or dashboard
         console.log("user data", data?.data?.user)
       } else {
         toast.error(data.message || "Login failed")

@@ -1,72 +1,82 @@
 "use client";
+import { useEffect, useState } from "react";
 import { CardContent, CardTitle, CardHeader, Card } from "@/components/ui/card";
 
-const bookings = [
-    {
-        id: 1,
-        providerName: "Elite Electricians",
-        date: "Tomorrow",
-        time: "10:00 AM",
-        status: "CONFIRMED",
-    },
-    {
-        id: 2,
-        providerName: "AquaFix Plumbing",
-        date: "Jun 28",
-        time: "2:30 PM",
-        status: "PENDING",
-    },
-    {
-        id: 3,
-        providerName: "CleanAir AC Service",
-        date: "Jun 30",
-        time: "4:00 PM",
-        status: "CONFIRMED",
-    },
-    {
-        id: 4,
-        providerName: "SmartHome IT Setup",
-        date: "Jul 1",
-        time: "6:00 PM",
-        status: "CANCELLED",
-    },
-];
-
-// Optional: Status badge color map
+// 🔹 Status badge color map
 const statusStyles: Record<string, string> = {
-    CONFIRMED: "bg-green-100 text-green-800",
-    PENDING: "bg-blue-100 text-blue-800",
-    CANCELLED: "bg-red-100 text-red-800",
+  CONFIRMED: "bg-green-100 text-green-800",
+  PENDING: "bg-blue-100 text-blue-800",
+  CANCELLED: "bg-red-100 text-red-800",
 };
 
-const RecentBooking = () => {
-    return (
-        <Card className="rounded-sm shadow-none">
-            <CardHeader>
-                <CardTitle>Recent Bookings</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                    {bookings.map((booking) => (
-                        <div
-                            key={booking.id}
-                            className="flex items-center justify-between p-4 border rounded-sm"
-                        >
-                            <div>
-                                <p className="font-medium">{booking.providerName}</p>
+interface Booking {
+  _id: string;
+  providerId: {
+    firstName: string;
+    lastName: string;
+  };
+  status: string;
+}
 
-                            </div>
-                            <span
-                                className={`px-2 py-1 text-xs rounded-full ${statusStyles[booking.status]}`}
-                            >
-                                {booking.status.charAt(0) + booking.status.slice(1).toLowerCase()}
-                            </span>
-                        </div>
-                    ))}
+const RecentBooking = () => {
+  const [pendingBookings, setPendingBookings] = useState<Booking[]>([]);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/contacts/all-contacts`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        if (data.success && Array.isArray(data.data)) {
+          const filtered = data.data.filter((b: Booking) => b.status === "pending");
+          setPendingBookings(filtered);
+        }
+      } catch (error) {
+        console.error("Failed to load bookings:", error);
+      }
+    };
+
+    fetchBookings();
+  }, []);
+
+  return (
+    <Card className="rounded-sm shadow-none">
+      <CardHeader>
+        <CardTitle>Recent Bookings</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {pendingBookings.length > 0 ? (
+            pendingBookings.map((booking) => (
+              <div
+                key={booking._id}
+                className="flex items-center justify-between p-4 border rounded-sm"
+              >
+                <div>
+                  <p className="font-medium">
+                    {booking.providerId?.firstName} {booking.providerId?.lastName}
+                  </p>
                 </div>
-            </CardContent>
-        </Card>
-    );
+                <span
+                  className={`px-2 py-1 text-xs rounded-full ${statusStyles["PENDING"]}`}
+                >
+                  Pending
+                </span>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">No pending bookings found.</p>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
 };
 
 export default RecentBooking;

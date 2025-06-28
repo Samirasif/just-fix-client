@@ -10,9 +10,9 @@ const Logo = () => {
                 <Image
                     src="/logo.png"
                     alt="Logo"
-                    width={40}
-                    height={40}
-                    className='w-full h-full object-cover'
+                    width={60}
+                    height={60}
+                    className='w-40 h-15 object-cover'
                 />
             </div>
         </Link>

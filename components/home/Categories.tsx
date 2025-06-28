@@ -14,20 +14,26 @@ const Categories = () => {
   const [serviceCategories, setServiceCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/categories`);
-        setServiceCategories(res.data.data); // assumes structure: { success, message, data: [...] }
-      } catch (error) {
-        console.error('Failed to fetch categories', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+ useEffect(() => {
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASEURL}/service-providers/categories`,
+        {
+          withCredentials: true, // 🔥 THIS LINE IS ESSENTIAL
+        }
+      );
+      setServiceCategories(res.data.data);
+    } catch (error) {
+      console.error('Failed to fetch categories', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchCategories();
-  }, []);
+  fetchCategories();
+}, []);
+
 
   return (
     <div className="w-full">
