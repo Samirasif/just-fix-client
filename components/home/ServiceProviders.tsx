@@ -67,7 +67,7 @@ const ServiceProviders = () => {
             return (
               <div
                 key={provider._id}
-                className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow"
+                className="bg-fuchsia-200 rounded-lg shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow"
               >
                 <div className="flex justify-between items-start">
                   {/* First character of firstName */}

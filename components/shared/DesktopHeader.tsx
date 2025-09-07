@@ -2,6 +2,9 @@
 import React, { useState, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { logout } from "@/redux/slice/authSlice";
+import { useDispatch } from "react-redux";
 import {
   Search,
   User,
@@ -36,7 +39,8 @@ const DesktopHeader: React.FC = () => {
   const user = useSelector(selectCurrentUser);
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<IServiceProvider[]>([]);
-
+ const router = useRouter();
+ const dispatch =useDispatch();
   const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
   const value = e.target.value;
   setQuery(value);
@@ -59,6 +63,16 @@ const DesktopHeader: React.FC = () => {
     console.error('Search error:', error);
     setResults([]);
   }
+};
+const handleLogout = () => {
+  // Remove token
+  localStorage.removeItem("accessToken"); // Or use cookies if stored there
+
+  // Clear Redux user
+  dispatch(logout());
+
+  // Redirect
+  router.push("/login");
 };
 
 
@@ -118,7 +132,7 @@ const DesktopHeader: React.FC = () => {
                     <div className="pt-3">
                       <div className="w-40 bg-white shadow-md rounded-md overflow-hidden">
                         <Link
-                          href="/dashboard"
+                          href={`/${user?.role?.toLowerCase()}/dashboard`}
                           className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
                           <LayoutDashboard className="h-4 w-4 text-gray-500" />
@@ -131,13 +145,13 @@ const DesktopHeader: React.FC = () => {
                           <Settings className="h-4 w-4 text-gray-500" />
                           Settings
                         </Link>
-                        <Link
-                          href="/logout"
+                        <button
+                          onClick={handleLogout}
                           className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         >
                           <LogOut className="h-4 w-4 text-red-500" />
                           Logout
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </div>

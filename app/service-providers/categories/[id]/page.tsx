@@ -74,9 +74,9 @@ export default function ServiceProvidersPage() {
                             {providers.map((provider) => (
                                 <div
                                     key={provider._id}
-                                    className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col justify-between h-full"
+                                    className="bg-blue-200 rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow flex flex-col justify-between h-full"
                                 >
-                                    <div className="flex justify-between items-start">
+                                    <div className="flex justify-between items-start ">
                                         {/* Left: Initial & Provider Info */}
                                         <div className="flex space-x-4">
                                             <div className="w-12 h-12 bg-black rounded-lg flex items-center justify-center">

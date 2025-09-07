@@ -61,7 +61,7 @@ export default function LoginPage() {
         }))
         toast.success("Logged in successfully!")
         // optionally store token: localStorage.setItem("token", data.token)
-        router.push("/user/dashboard") // redirect to home or dashboard
+        router.push(`/${role?.toLowerCase()}/dashboard`) // redirect to home or dashboard
         console.log("user data", data?.data?.user)
       } else {
         toast.error(data.message || "Login failed")

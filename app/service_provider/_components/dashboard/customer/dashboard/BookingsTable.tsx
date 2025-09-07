@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Trash } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 
+import { Card, CardContent } from "@/components/ui/card";
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button";
 
 import {
@@ -18,14 +18,18 @@ import { Pagination, PaginationContent, PaginationItem, PaginationNext, Paginati
 
 interface Contact {
   _id: string;
-  providerId: {
+  userId: {
     firstName: string;
     lastName: string;
-    profession: string;
+    phone:string;
+    email:string;
   };
+  message:string;
+
   location: string;
   status: string;
   createdAt: string;
+
 }
 
 const BookingsTable = () => {
@@ -38,7 +42,7 @@ const BookingsTable = () => {
     const fetchContacts = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/contacts/all-contacts`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/all-contacts`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -59,6 +63,32 @@ const BookingsTable = () => {
     setPage(1);
     setStatus(e.target.value);
   };
+  const handleDelete = async (contactId: string) => {
+  try {
+    const token = localStorage.getItem("accessToken");
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/${contactId}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      setContacts((prev) => prev.filter((c) => c._id !== contactId));
+      toast.success(data.message);
+    } else {
+      console.error("Delete failed:", data.message);
+      alert("Failed to delete booking");
+    }
+  } catch (error) {
+    console.error("Error deleting booking:", error);
+    alert("Something went wrong!");
+  }
+};
+
 
   const filtered = status
     ? contacts.filter((c) => c.status.toLowerCase() === status.toLowerCase())
@@ -97,9 +127,9 @@ const BookingsTable = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Date</TableHead>
-                  <TableHead>Provider</TableHead>
-                  <TableHead>Service</TableHead>
+                  <TableHead>Customer</TableHead>
                   <TableHead>Location</TableHead>
+                  <TableHead>Message</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -111,10 +141,13 @@ const BookingsTable = () => {
                       {new Date(contact.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      {contact.providerId?.firstName} {contact.providerId?.lastName}
+                      {contact.userId?.firstName} {contact.userId?.lastName} <br/>
+                      {contact.userId?.phone} <br/>
+                      {contact.userId?.email}
                     </TableCell>
-                    <TableCell>{contact.providerId?.profession}</TableCell>
+                    
                     <TableCell>{contact.location}</TableCell>
+                    <TableCell>{contact.message}</TableCell>
                     <TableCell>
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium ${
@@ -132,14 +165,14 @@ const BookingsTable = () => {
                     </TableCell>
                     <TableCell>
                       {contact.status === "pending" ? (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => console.log("Delete booking", contact._id)}
-                          className="text-red-600 cursor-pointer hover:text-red-800 hover:bg-red-50"
-                        >
-                          <Trash size={16} />
-                        </Button>
+                       <Button
+  variant="ghost"
+  size="sm"
+  onClick={() => handleDelete(contact._id)}
+  className="text-red-600 cursor-pointer hover:text-red-800 hover:bg-red-50"
+>
+  Accept
+</Button>
                       ) : (
                         <span className="inline-flex items-center px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
                           ✅ Done

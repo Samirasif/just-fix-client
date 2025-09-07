@@ -6,7 +6,12 @@ import { usePathname } from "next/navigation";
 const Footer = () => {
   const pathname = usePathname();
   const hideHeader =
-    pathname.startsWith("/user") || pathname.startsWith("/admin");
+    pathname.startsWith("/user") ||
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/customer")||
+    pathname.startsWith("/service_provider");
+
+  
 
   if (hideHeader) return null;
   return (

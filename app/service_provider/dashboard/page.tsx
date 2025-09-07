@@ -1,8 +1,9 @@
-import BookingsTable from "@/components/dashboard/user/dashboard/BookingsTable";
-import MetricsChart from "@/components/dashboard/user/dashboard/MetricsChart";
-import RecentBooking from "@/components/dashboard/user/dashboard/RecentBooking";
-import UserOverview from "@/components/dashboard/user/dashboard/UserOverview";
+
 import React from "react";
+import UserOverview from "../_components/dashboard/customer/dashboard/UserOverview";
+import MetricsChart from "../_components/dashboard/customer/dashboard/MetricsChart";
+import RecentBooking from "../_components/dashboard/customer/dashboard/RecentBooking";
+import BookingsTable from "../_components/dashboard/customer/dashboard/BookingsTable";
 
 const page = () => {
     return (

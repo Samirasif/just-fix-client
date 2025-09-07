@@ -11,10 +11,14 @@ const statusStyles: Record<string, string> = {
 
 interface Booking {
   _id: string;
-  providerId: {
+  userId: {
     firstName: string;
     lastName: string;
+    email:string;
+    phone:string;
   };
+  location:string;
+  message:string;
   status: string;
 }
 
@@ -25,7 +29,7 @@ const RecentBooking = () => {
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/contacts/all-contacts`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASEURL}/service-providers/all-contacts`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -48,7 +52,7 @@ const RecentBooking = () => {
   return (
     <Card className="rounded-sm shadow-none">
       <CardHeader>
-        <CardTitle>Recent Bookings</CardTitle>
+        <CardTitle>Recent Orders</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -60,8 +64,18 @@ const RecentBooking = () => {
               >
                 <div>
                   <p className="font-medium">
-                    {booking.providerId?.firstName} {booking.providerId?.lastName}
+                    {booking.userId?.firstName} {booking.userId?.lastName} <br/>
+                     {booking.userId?.phone} <br/>
+                      {booking.userId?.email}
                   </p>
+                  <p className="font-medium">
+                    {booking.location} 
+                  </p>
+                  <p className="font-medium">
+                    {booking.message} 
+                  </p>
+                  
+                  
                 </div>
                 <span
                   className={`px-2 py-1 text-xs rounded-full ${statusStyles["PENDING"]}`}
@@ -71,7 +85,7 @@ const RecentBooking = () => {
               </div>
             ))
           ) : (
-            <p className="text-sm text-muted-foreground">No pending bookings found.</p>
+            <p className="text-sm text-muted-foreground">No pending orders found.</p>
           )}
         </div>
       </CardContent>

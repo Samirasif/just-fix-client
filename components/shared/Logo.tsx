@@ -8,11 +8,11 @@ const Logo = () => {
         <Link href="/" className="flex items-center ">
             <div className="px-3  w-auto  flex items-center justify-center">
                 <Image
-                    src="/logo.png"
+                    src="/logo.jpeg"
                     alt="Logo"
                     width={60}
                     height={60}
-                    className='w-40 h-15 object-cover'
+                    className='w-30 h-15 '
                 />
             </div>
         </Link>

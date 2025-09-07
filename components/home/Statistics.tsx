@@ -76,7 +76,7 @@ const Statistics = () => {
         {stats.map((item) => (
           <div
             key={item.id}
-            className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+            className="bg-indigo-300 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
           >
             <div className="flex items-center space-x-4">
               <div

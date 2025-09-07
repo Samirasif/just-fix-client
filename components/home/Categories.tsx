@@ -44,9 +44,9 @@ const Categories = () => {
           {loading ? (
             <p>Loading categories...</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {serviceCategories.map((category, index) => (
-                <Link href= {`/service-providers/categories/${category.name}`} key={index} className="flex justify-between bg-white items-center space-x-4 border p-3 rounded-lg">
+                <Link href= {`/service-providers/categories/${category.name}`} key={index} className="flex justify-between bg-blue-200 items-center space-x-4 border p-3 rounded-lg p-2">
                   <div className="space-y-1">
                     <h3 className="font-semibold text-gray-900 hover:text-blue-600 cursor-pointer transition-colors">
                       {category.name}

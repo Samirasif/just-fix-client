@@ -9,7 +9,8 @@ const Header = () => {
   const hideHeader =
     pathname.startsWith("/user") ||
     pathname.startsWith("/admin") ||
-    pathname.startsWith("/customer");
+    pathname.startsWith("/customer")||
+    pathname.startsWith("/service_provider");
 
   if (hideHeader) return null;
 
